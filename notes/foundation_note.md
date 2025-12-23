@@ -158,7 +158,10 @@ b可以按位置或者关键字传入
 ```
 
 ## lambda
+```python
 lambda x, y: x+y
+sort(data, key = lambda x: (-x[0], x[1]))   按x[0]倒叙排，相同时再按x[1]排序
+```
 前半部分为参数，后半部分为表达式
 
 ## 函数注解
@@ -177,6 +180,7 @@ def f(a: str, b: int) -> dict:
 from collections import deque
 # 效率比list更高，更适合用来实现queue
 queue = deque([1, 2, 3])
+queue = deque(maxlen=n) # 可指定maxlen。达到maxlen之后就右进左出
 queue.append(4)
 queue.popleft()
 ```
@@ -211,5 +215,117 @@ import a           a.f()
 import a as aa     aa.f()
 from a import f    f()
 from a import *    f()
+```
+### 添加 init.py使该目录成为一个包
+```text
+相对导入必须是包与包之间的关系，即主脚本和工具脚本所在目录都需要有 __init__.py
+同时，只要发生了该目录下的导入，即执行__init__.py
+project_root/              # 通常不放 __init__.py
+└── mypackage/             # ← 根包，必须有 __init__.py
+    ├── __init__.py
+    ├── main.py            # 主脚本
+    ├── utils/             # 子包
+    │   ├── __init__.py
+    │   └── helper.py
+    └── data/
+        ├── __init__.py
+        └── loader.py
+```
 
+## 格式化输出
+```python
+print(f"{a} and {b}")
+print(f"{a:.3f}")      #下面的保留位数方法可以用在f格式化中
+print("{:2} and {:2.2%}".format(a, b))
+{:.3}  保留 3位有效数字
+{:.3f} 保留 小数点后3位有效数字
+{:.3%} 百分比化，保留小数点后3位有效数字
+```
+
+## 读写文件
+```python
+'''
+在mode后面➕b则为二进制读/写，此时encoding失效，无法使用
+读写JPEG 和 EXE等二进制文件时最好 +b
+'''
+from pathlib import Path        用该库来自动创建父级目录
+file_path = Path("")
+file_path.parent.mkdir(parenst=True, exist_ok=True)
+
+with open("file_path", "w/r/a/r+", encoding="utf-8") as f:
+    read_data = f.read(size) # size 为可选，最多读取size个字符/字节 
+    f.readline()  # 读取一行          + 表示读写混合模式
+    for line in f:
+        print(line)  # 按行读，循环
+    list(f); f.readlines() # 读取所有行，作为列表
+    f.write("This is a str") #写入文件，返回值为字符数
+
+```
+## json
+```python
+json.dump(data, file, ensure_acii=False, indent=2) # 把可序列化数据(list, dict, str)写进file
+json.load(file) 把文件还原为本来的格式，取决于dump时的格式
+
+json.dumps(data, ensure_acii=False, indent=2) # 把数据格式化为安全的字符串
+json.loads(file) # 字符串格式化为json，需要是json支持的格式，也取决于dumps之前的格式
+
+```
+
+## 异常处理
+异常能够被捕获，同时其他代码会继续运行
+```python
+try:
+    coding
+except Exception as e:
+    coding
+finally:               #无论如何都会执行，放到最后
+    coding
+```
+
+## 类
+### namespace
+```python
+nonlocal a    #修改最近的外层变量a
+a = 1
+global a      #修只改最外层的全局a，但是中间仍然存在的函数空间的a不变
+a = 1 
+
+class Example:
+    def __init__(self, name):     #初始化函数，可以没有。用来给类赋值一些属性
+        self.name = name
+    def func(self, pares)         #类方法，调用时接收函数
+        print(pares)
+a = Example("Alice")
+a.name                -> "Alice"
+a.func("example")     -> "example"
+```
+
+## 迭代器
+```python
+s = "abc"
+it = iter(s)
+next(it) -> a -> b -> c 执行3次
+```
+
+## 生成器
+```python
+rev_gen = (data[i] for i in range(len(data)-1, -1, -1))  # 类似于[a for a in list]
+# 等价于
+def reverse_gen(data):
+    for i in range(len(data)-1, -1, -1):
+        yield data[i]
+
+rev_gen = reverse_gen(data)
+
+# rev_gen是一个生成器，一次只拿一个条数据，不占用内存
+for char in rev_gen:
+    print(char)
+```
+
+## 字符串处理
+```python
+a = str.split(",")     # 默认以连续空格分割，返回list
+a = "".join(list)      # list里面必须是str，以""中的内容来连接，返回str
+
+a = str.strip()        # 删除两端空格、回车等。可指定删除元素
 ```
