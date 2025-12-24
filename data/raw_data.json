@@ -1,0 +1,74 @@
+[
+    {
+        "session_id": 123,
+        "video_info": [
+            {
+                "name": "fFjv93ACGo8.mp4",
+                "fps": 29.97002997002997,
+                "resolution": [
+                    1280,
+                    720
+                ],
+                "frame_index": [
+                    0,
+                    5,
+                    10
+                ],
+                "duration": 74.327075,
+                "subtitle": [],
+                "meta": "string"
+            },
+            {
+                "name": "HwnB8aCn8yE.mp4",
+                "fps": 25.0,
+                "resolution": [
+                    1280,
+                    720
+                ],
+                "frame_index": [
+                    0,
+                    5,
+                    10
+                ],
+                "duration": 74.327075,
+                "subtitle": [
+                    "subtitle_of_frame_0",
+                    "ubtitle_of_frame_5",
+                    "ubtitle_of_frame_10"
+                ],
+                "meta": "string"
+            }
+        ],
+        "content": [
+            {
+                "role": "system",
+                "text": "你是一个问答机器人"
+            },
+            {
+                "text": "看完这个视频<video_token_1>，在这张图片里找到答案<image_token_1>，再看这个视频<video_token_1>，结合这个图片给出分析<image_token_1>,最后听个音频<audio_token_1>",
+                "question_id": "001-1",
+                "role": "user",
+                "type": "text",
+                "video": [
+                    "fFjv93ACGo8.mp4",
+                    "HwnB8aCn8yE.mp4"
+                ],
+                "image": [
+                    "image_1.jpg",
+                    "image_2.jpg"
+                ],
+                "audio": [
+                    "audio_1.wav"
+                ],
+                "question_type": "open",
+                "answer": "<think>我需要分析这个视频的内容</think> 这个视频真好看 <image_token_2>",
+                "option": [],
+                "extra_info": ""
+            }
+        ],
+        "extra_info": "",
+        "tags": [
+            "math"
+        ]
+    }
+]

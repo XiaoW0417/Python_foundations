@@ -32,3 +32,17 @@ random.randint(0, 10)         # 指定范围整数采样
 from decimal import *
 round(Decimal("1.34") * Decimal("23.1"), 2)    # 十进制浮点数运算，都是先由str转过来的，精度更高
 ```
+
+## collections
+```python
+from collections import defaultdict
+d = defaultdict[list]
+d['a'].append(1) # 相比dict的有点在于不需要初始化，指定为list之后对于空键可以直接进行列表操作
+
+# 控制字典中的元素，并且保持插入的顺序      但是内存是普通字典的两倍，注意
+from collections import OrderedDict
+d = OrderedDict()
+for key in d:
+    print(key, d[key])
+
+```

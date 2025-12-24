@@ -2,7 +2,11 @@ import json
 
 from pathlib import Path
 
-file_path = Path("../data/stu_dict.json")
+SCRIPT_FILE = Path(__file__).resolve()
+print(SCRIPT_FILE)
+SCRIPT_DIR = SCRIPT_FILE.parent.parent
+print(SCRIPT_DIR)
+file_path = SCRIPT_DIR / "data" / "stu_dict.json"
 file_path.parent.mkdir(parents=True, exist_ok=True)
 
 data = {"姓名": "张三", 
@@ -15,7 +19,7 @@ data = {"姓名": "张三",
 
 try:
     with open(file_path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=True, indent=4)
+        json.dump(data, f, ensure_ascii=False, indent=4)
     with open(file_path, "r", encoding="utf-8") as f:
         content = json.load(f)
     courses = content.get("课程列表")
