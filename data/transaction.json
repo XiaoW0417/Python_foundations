@@ -1,0 +1,7 @@
+[
+  {"id": 1, "user": "Alice", "amt": "100.50", "status": "SUCCESS", "ts": 1709880000},
+  {"id": 2, "user": "Bob", "amt": "2.5", "status": "PENDING", "ts": 1709880010},
+  {"id": 3, "user": "Alice", "amt": "3.5", "status": "SUCCESS", "ts": 1709880020},
+  {"id": 4, "user": "Mike", "amt": "1.0", "status": "FAIL", "ts": 1709880030},
+  {"id": 5, "user": "Bob", "amt": "5000.00", "status": "SUCCESS", "ts": 1709880040}
+]

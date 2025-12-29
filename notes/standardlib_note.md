@@ -45,4 +45,69 @@ d = OrderedDict()
 for key in d:
     print(key, d[key])
 
+from collections import Counter
+data = ['Alice', 'Alice', 'Mike']
+count_data = Counter(data)                # 返回的是一个dict结构的数据，对应出现次数，Counter({'Alice': 2, 'Mike': 1})
+most_com = count_data.most_common(1)      # 返回出现最多的1个 [('Alice', 2)]
+
+# 优雅的展平可迭代对象
+from collection import Iterable
+def flatten(items, ignore_types=(str, bytes)):
+    for x in items:
+        if isinstance(x, Iterable) and not isinstance(x, ignore_types):
+            yield from flatten(x)   # 相当于再次for，递归的话就加上from
+        else:
+            yield x
+```
+
+## itertools
+```python
+from itertools import groupby
+
+rows.sort(key=lambda x:x['date'])                # 需要先将rows进行排序，因为groupby只将连续的相同key分为一组
+gb_rows = groupby(rows, key=lambda x:x['date'])  # gb_rows的结构类似 [key1: [data1, data2], key2: [data3, data4]]
+                                                 # 也可以用defaultdict[list] 来存，用date实现查找。groupby的优势在于它是一个迭代器，省内存
+for date, row in gb_rows:
+    print(f"date:{date}")
+    for i in row:
+        print(f"{i}")
+```
+
+## Numpy
+```python
+import numpy as np         
+x = np.array([1, 2, 3])
+y = np.array([3, 4, 5])     # 不可增长
+z = np.array([         
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12]
+])
+z[1:3, 1:3]              # 支持多维索引切片，list不支持
+
+# numpy数组的标量运算时每个元素进行计算，但是纯list是拼接、复制列表
+x += 1 / x += y / x *= y
+
+numpy.zeros(shape=(x, y), dtype=float) / .ones() # 以0初始化指定形状的numpy数组
+
+numpy.where(x<10, x, 10)    # where(codition, codition成立的取值, 不成立的取值) 用于剔除异常值、条件赋值
+numpy.where(x>0)            # 返回的是index，二维就是 行下标[] 列下标[] 可以用rows, cols = idx来接收，zip组合更好看懂
+
+x @ y / np.dot(x, y) / np.matmul(x, y) # 对array进行矩阵乘法，也可以用np.matrix直接*，但是array更灵活
+```
+
+## pickle 序列化存储py对象
+```python
+import pickle
+pickle.dump / .dumps
+pincle.load / .loads # 用法与json相同
+```
+
+## time
+```python
+import time
+now_time = time.localtime()
+time_stamp = time.time()                               # 从1970-01-01 00:00:00 UTC 开始的秒数, float
+converted_time = time.localtime(time_stamp)            # 把浮点数转为对应的日期struct
+f_time = time.strftime("%Y %m %d %H %M %S", now_time)  # 取出struct里面的时间, 用之前，如果是float，记得先用time.localtime转为struct
 ```

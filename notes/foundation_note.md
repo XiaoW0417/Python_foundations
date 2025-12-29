@@ -47,7 +47,7 @@ id(a) == id(b) True
 (10)reversed 反转列表顺序 不同于上面的函数，这里数据类型还需要list()给转回来
 ```
 
-切分赋值是深拷贝
+切分赋值是浅拷贝
 ```python
 a = [1, 2, 3]
 b = [:1] 
@@ -95,6 +95,9 @@ keys | {'a', 'b', 'c'}  # 并集
 keys & {'a', 'b', 'c'}  # 交集
 keys ^ {'a', 'b', 'c'}  # 对称差
 keys <= {'a', 'b', 'c'} # 判断包含关系
+
+# 字典推导式 方便创建子集
+d1 = {key: value for key, value in d.items() if key in ['a', 'b'] and value < 0}
 ```
 in 只在dict的key中进行查找
 
@@ -290,6 +293,8 @@ except Exception as e:
     coding
 finally:               #无论如何都会执行，放到最后
     coding
+
+raise ValueError("It's going wrong") #主动制造报错
 ```
 
 ## 类
@@ -301,13 +306,77 @@ global a      #修只改最外层的全局a，但是中间仍然存在的函数�
 a = 1 
 
 class Example:
-    def __init__(self, name):     #初始化函数，可以没有。用来给类赋值一些属性
+    def __init__(self, name):     # 初始化函数，可以没有。用来给类赋值一些属性
         self.name = name
-    def func(self, pares)         #类方法，调用时接收函数
+    def func(self, pares)         # 类方法，调用时接收函数
         print(pares)
+
+    def __repr__(self):           # 固定名称的特殊方法，会被一些方法调用，用于直接查看Example，可防止引号注入报错
+        return f"Class Name for dev:{self.name}"
+
+    def __str__(self):            # 同__repr__，但是优先级有所不同，无法防止引号注入
+        return f"Class Name for user:{self.name}"
+                                  # 优先级：print()/str()/!s  -> __str__ -> __repr__
+example1 = Example("Alice")       #        repr()/ !r        ->__repr__
+print(f"{example1!r}")            # -> Class Name for dev: Alice
+    
 a = Example("Alice")
 a.name                -> "Alice"
 a.func("example")     -> "example"
+
+# 类的继承
+class Parent():
+    def __init__(self):
+        self.P_name = "Parent"
+    def P_func():
+        print("This is a P_func")
+
+class Child(Parent):                    # super()可调用父类方法，必须显示调用，初始化后才能拿到父类属性
+    def __init__(self):                 # 如果有同名，子类的会重写父类的变量/方法
+        super().__init__()
+        self.C_name = "Child"
+        super().P_func()
+
+```
+
+## 装饰器
+```python
+from functools import wraps
+def decorator(func):
+    @wraps(func)                # 裹一层wraps是为了保留原函数的信息
+    def wrapper(*args, **kwargs):
+        print("Now is the first step in wraps")
+        print(func(*args, **kwargs))
+        print("Now finished")
+    
+    return wrapper
+                                 # 用来处理一些基础信息，计时、日志打印等
+@decorator                       # 本质其实就是把my_func改名了，换成了wrapper，同时里面的参数也给wrapper函数了
+def my_func(a, b):
+    print("Now is my func")
+    return a+b
+
+my_func(1, 2)
+```
+
+## 类方法
+```python
+import time
+
+class Date:
+    def __init__(self, year, month, day):
+        self.day = day
+        self.month = month
+        self.year = year
+    
+    @classmethod                          # 本质是为了用一些自动化函数来给类传属性，调用这个类方法即可获得一个该类
+    def date(cls):                        # 类方法只能通过Date.date() 来调用，实例无法调用
+        t = time.localtime()              # 创建好实例之后，即可获取相关属性 
+        cls_basedon_date = cls(t.tm_year, t.tm_mon, t.tm_mday) # cls(t.tm_year, t.tm_mon, t.tm_mday) 即把参数传给init，然后创建了一个对象
+        print(cls_basedon_date.day)
+        return cls_basedon_date
+
+a = Date.date()
 ```
 
 ## 迭代器
@@ -336,6 +405,12 @@ for char in rev_gen:
 ```python
 a = str.split(",")     # 默认以连续空格分割，返回list
 a = "".join(list)      # list里面必须是str，以""中的内容来连接，返回str
+str.startwith('x') / .startwith(('x', 'y'))
+str.endwith('x')       # 均返回bool, 可以判断多个，但是需要传入tuple
+str.find('x')          # 返回第一次出现的下标
+str.replace('x', 'y')
+str.ljust(20) / ljust(20, "--") /rjust() / center()   # 对齐字符串，可选填充字符
+textwrap.fill(str, 20) # 格式化字符串，指定列宽为20
 
 a = str.strip()        # 删除两端空格、回车等。可指定删除元素
 ```
