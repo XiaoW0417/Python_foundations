@@ -51,7 +51,7 @@ count_data = Counter(data)                # 返回的是一个dict结构的数�
 most_com = count_data.most_common(1)      # 返回出现最多的1个 [('Alice', 2)]
 
 # 优雅的展平可迭代对象
-from collection import Iterable
+from collection.abc import Iterable
 def flatten(items, ignore_types=(str, bytes)):
     for x in items:
         if isinstance(x, Iterable) and not isinstance(x, ignore_types):
@@ -110,4 +110,23 @@ now_time = time.localtime()
 time_stamp = time.time()                               # 从1970-01-01 00:00:00 UTC 开始的秒数, float
 converted_time = time.localtime(time_stamp)            # 把浮点数转为对应的日期struct
 f_time = time.strftime("%Y %m %d %H %M %S", now_time)  # 取出struct里面的时间, 用之前，如果是float，记得先用time.localtime转为struct
+```
+
+## logging
+```python
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)5s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    handlers=[
+        logging.FileHandler('practice.log', encoding='utf-8'),   # 输出到log文件
+        logging.StreamHandler()                                  # 输出到终端
+    ]
+)
+
+logging.info("This is an info")
+logging.warning("This is warning")
+logging.error("This is an error")
 ```

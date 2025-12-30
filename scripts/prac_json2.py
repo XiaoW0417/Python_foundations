@@ -29,9 +29,9 @@ stu_infos = list(student.values())
 notes = []
 
 for id in stu_ids:
-    if not student.get(id).get("age"):
+    if 'age' not in student.get(id):
         notes.append(f"{id} lacks age")
-    if not student.get(id).get("score"):
+    if 'score' not in student.get(id):
         notes.append(f"{id} lacks score")
 
 print("Ids and lacking infos")

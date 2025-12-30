@@ -16,7 +16,7 @@ try:
 
     print(f"Top {top_n} Students:")
     for i, student in enumerate(top_students):
-        print(f"Rank {i}: [{student.get("id")}] {student.get("name")} - Score: {student.get("score")}")
+        print(f"Rank {i}: [{student.get('id')}] {student.get('name')} - Score: {student.get('score')}")
 
 except Exception as e:
     print(f"Error: {e}")
